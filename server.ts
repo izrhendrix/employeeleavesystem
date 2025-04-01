@@ -6,11 +6,18 @@ import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
 
 // The Express app is exported so that it can be used by serverless Functions.
+
 export function app(): express.Express {
   const server = express();
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
   const indexHtml = join(serverDistFolder, 'index.server.html');
+
+var cors = require('cors')
+server.use(cors)
+
+// Use this after the variable declaration
+  
 
   const commonEngine = new CommonEngine();
 
@@ -24,6 +31,8 @@ export function app(): express.Express {
     maxAge: '1y',
     index: 'index.html',
   }));
+
+  
 
   // All regular routes use the Angular engine
   server.get('**', (req, res, next) => {
